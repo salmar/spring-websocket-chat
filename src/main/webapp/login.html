@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="springChat">
+	<head>
+	  <meta charset="utf-8" />
+	  <title>Spring WebSocket Chat</title>
+	  
+	  <!-- Loading Bootstrap -->
+	  <link href="lib/flat-ui-official/bootstrap/css/bootstrap.css" rel="stylesheet">
+	
+	  <!-- Loading Flat UI -->
+	  <link href="lib/flat-ui-official/css/flat-ui.css" rel="stylesheet">
+	  
+	  <link href="css/chat.css" rel="stylesheet">	  
+	</head>
+	<body>
+		<div class="container">
+	        <div class="login">
+		        <div class="login-screen">
+		          <div class="login-icon">
+		            <h4>Welcome to <small>Spring WebSocket Chat</small></h4>
+		          </div>
+		
+		          <div class="login-form">
+		          	<p><small style="color:#666">Enter any nickname to join. If you want to become be admin type 'rockandroll'</small></p>
+		          	<form method="post">
+			            <div class="form-group">
+			              <input type="text" class="form-control login-field" placeholder="Enter your name" name="username" />
+			              <label class="login-field-icon fui-user" for="login-name"> Username</label>
+			            </div>
+			
+			            <div class="form-group">
+			              <input type="password" class="form-control login-field" name="password" />
+			              <label class="login-field-icon fui-lock" for="login-pass"> Admin password </label>
+			            </div>
+			
+						<input class="btn btn-primary btn-lg btn-block"  type="submit" value="Log In"/>
+		            </form>
+		          </div>
+		        </div>
+		      </div>
+	    </div>
+	    <!-- /.container -->
+	
+
+		
+	</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Spring WebSocket Chat",
+  "version": "0.1.0",
+  "authors": ["Sergi Almar <sergi.almar@gmail.com>"],
+  "dependencies": {
+	"jquery": "2.1.1",
+    "angular": "1.2.23",
+    "angular-animate": "1.2.23",
+    "angularjs-toaster": "0.4.7",
+    "angularjs-scroll-glue": "0.0.1",
+    "sockjs": "~0.3",
+    "stomp": "stomp-websocket#~2.3.1",
+    "flat-ui-official": "2.1.3"
+  }
+}

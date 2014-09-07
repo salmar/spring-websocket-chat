@@ -1,0 +1,15 @@
+.container {
+  width: 970px !important;
+}
+
+.navbar h1 {
+	margin-top: 15px;
+	font-size: 22px;
+	float:left;
+	color: #fff;
+}
+
+.chat-box {
+	height:400px;
+	overflow: auto;
+}
