@@ -29,7 +29,7 @@ ext {
     junitVersion = '4.11'
     hamcrestVersion = '1.3'
     log4jVersion = '1.2.17'
-    reactorVersion = '1.0.1.RELEASE'
+    reactorVersion = '1.1.4.RELEASE'
     slf4jVersion = '1.7.7'
     servletApiVersion = '3.1.0'
     springVersion = '4.1.1.BUILD-SNAPSHOT'
@@ -44,7 +44,6 @@ dependencies {
     compile "org.springframework:spring-web:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-websocket:$springVersion"
-    compile "org.projectreactor:reactor-tcp:$reactorVersion"
     
     compile "org.springframework.security:spring-security-core:$springSecurityVersion"
     compile "org.springframework.security:spring-security-messaging:$springSecurityVersion"
@@ -52,6 +51,8 @@ dependencies {
     compile("org.springframework.security:spring-security-web:$springSecurityVersion") {
     	exclude group: 'org.springframework', module: 'spring-jdbc'
     }
+    
+    compile "org.projectreactor:reactor-net:$reactorVersion"
     
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     

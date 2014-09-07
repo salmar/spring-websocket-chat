@@ -36,12 +36,12 @@ public class ChatController {
 	@Autowired private ParticipantRepository participantRepository;
 	@Autowired private SimpMessagingTemplate simpMessagingTemplate;
 	
-	@SubscribeMapping("/chat/participants")
+	@SubscribeMapping("/chat.participants")
 	public Collection<LoginEvent> retrieveParticipants() {
 		return participantRepository.getActiveSessions().values();
 	}
 	
-	@MessageMapping("/chat/message")
+	@MessageMapping("/chat.message")
 	public ChatMessage filterMessage(@Payload ChatMessage message, Principal principal) {
 		checkProfanityAndSanitize(message);
 		
@@ -50,13 +50,13 @@ public class ChatController {
 		return message;
 	}
 	
-	@MessageMapping("/chat/private/{username}")
+	@MessageMapping("/chat.private.{username}")
 	public void filterPrivateMessage(@Payload ChatMessage message, @DestinationVariable("username") String username, Principal principal) {
 		checkProfanityAndSanitize(message);
 		
 		message.setUsername(principal.getName());
 
-		simpMessagingTemplate.convertAndSend("/user/" + username + "/queue/chat/message", message);
+		simpMessagingTemplate.convertAndSend("/user/" + username + "/queue/chat.message", message);
 	}
 	
 	private void checkProfanityAndSanitize(ChatMessage message) {
