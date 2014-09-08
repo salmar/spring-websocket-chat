@@ -102,6 +102,7 @@ angular.module('springChat.controllers', ['toaster'])
 		          
 			}, function(error) {
 				toaster.pop('error', 'Error', 'Connection error ' + error);
+				
 		    });
 		};
 		  

@@ -11,6 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.SessionRepository;
+import org.springframework.session.web.http.SessionRepositoryFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -18,9 +22,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String SECURE_ADMIN_PASSWORD = "rockandroll";
 	
+	@Autowired
+	private SessionRepository<? extends ExpiringSession> sessionRepository;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+			.addFilterBefore(new SessionRepositoryFilter(sessionRepository), ChannelProcessingFilter.class)
+
 			.csrf().disable()
 			.formLogin()
 				.loginPage("/login.html")

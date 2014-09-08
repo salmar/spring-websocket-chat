@@ -31,6 +31,7 @@ public class ChatConfig {
 	
 	private static final int MAX_PROFANITY_LEVEL = 5;
 	
+	/*
 	@Bean
 	@Description("Application event multicaster to process events asynchonously")
 	public ApplicationEventMulticaster applicationEventMulticaster() {
@@ -38,7 +39,7 @@ public class ChatConfig {
 		multicaster.setTaskExecutor(Executors.newFixedThreadPool(10));
 		return multicaster;
 	}
-	
+	*/
 	@Bean
 	@Description("Tracks user presence (join / leave) and broacasts it to all connected users")
 	public PresenceEventListener presenceEventListener(SimpMessagingTemplate messagingTemplate) {

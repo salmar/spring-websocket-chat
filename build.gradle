@@ -21,6 +21,7 @@ repositories {
 	maven { url "http://repo.spring.io/libs-release" }
     maven { url "http://repo.spring.io/milestone" }
     maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://clojars.org/repo" }
 }
 
 ext {
@@ -35,7 +36,7 @@ ext {
     springVersion = '4.1.1.BUILD-SNAPSHOT'
     springDataRedisVersion = '1.4.0.BUILD-SNAPSHOT'
     springSecurityVersion = '4.0.0.CI-SNAPSHOT'
-    springSession = '1.0.0.M1'
+    springSessionVersion = '1.0.0.BUILD-SNAPSHOT'
     tomcatVersion = '7.0.55' 
 }
 
@@ -44,6 +45,7 @@ dependencies {
     compile "org.springframework:spring-web:$springVersion"
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-websocket:$springVersion"
+    compile "org.springframework.session:spring-session:$springSessionVersion"
     
     compile "org.springframework.security:spring-security-core:$springSecurityVersion"
     compile "org.springframework.security:spring-security-messaging:$springSecurityVersion"
@@ -51,7 +53,10 @@ dependencies {
     compile("org.springframework.security:spring-security-web:$springSecurityVersion") {
     	exclude group: 'org.springframework', module: 'spring-jdbc'
     }
-    
+    compile "org.springframework.data:spring-data-redis:1.4.0.RC1"
+	compile "redis.clients:jedis:2.4.2"
+	compile "redis.embedded:embedded-redis:0.3"
+	
     compile "org.projectreactor:reactor-net:$reactorVersion"
     
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
