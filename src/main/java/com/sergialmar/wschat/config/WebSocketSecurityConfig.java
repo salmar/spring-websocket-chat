@@ -8,10 +8,10 @@ import org.springframework.security.config.annotation.web.socket.AbstractSecurit
 @Configuration
 public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
 
-    @Override
-    protected void configure(MessageSecurityMetadataSourceRegistry messages) {
+	@Override
+    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages
-                .destinationMatchers("/user/queue/errors").permitAll()
+                .antMatchers("/user/queue/errors").permitAll()
                 .anyMessage().hasRole("USER");
     }
 
