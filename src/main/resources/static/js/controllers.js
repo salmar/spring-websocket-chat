@@ -50,7 +50,7 @@ angular.module('springChat.controllers', ['toaster'])
 		};
 			
 		var initStompClient = function() {
-			chatSocket.init('/spring-websocket-chat/ws');
+			chatSocket.init('/ws');
 			
 			chatSocket.connect(function(frame) {
 				  

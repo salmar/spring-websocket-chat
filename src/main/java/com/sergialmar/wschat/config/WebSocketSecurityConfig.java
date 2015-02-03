@@ -1,7 +1,7 @@
 package com.sergialmar.wschat.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 
@@ -11,10 +11,9 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 	@Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages
-                .antMatchers("/user/queue/errors").permitAll()
-                .anyMessage().hasRole("USER");
+        		.antMatchers(SimpMessageType.MESSAGE, "/topic/chat.login", 
+        											  "/topic/chat.logout", 
+        											  "/topic/chat.message").denyAll()
+                .anyMessage().authenticated();
     }
-
-    // avoid processing outbound channel
-    public void configureClientOutboundChannel(ChannelRegistration registration) {}
 }

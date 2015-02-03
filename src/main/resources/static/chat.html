@@ -50,7 +50,7 @@
         	</div>
         	<div class="row">
        			<div class="form-group">
-       			  <span><small>You will send this message to <strong>{{sendTo}}</strong></small></span>
+       			  <span><small>You will send this message to <strong>{{sendTo}}</strong> (click a participant name to send a private message)</small></span>
 				  <input id="newMessageInput" type="text" class="form-control" placeholder="Write your message and hit enter..." ng-model="newMessage" ng-keyup="$event.keyCode == 13 ? sendMessage() : startTyping()"/>
 				</div>
         	</div>

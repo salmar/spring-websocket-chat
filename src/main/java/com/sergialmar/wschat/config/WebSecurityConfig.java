@@ -1,6 +1,9 @@
 package com.sergialmar.wschat.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,41 +13,35 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
-import org.springframework.session.ExpiringSession;
-import org.springframework.session.SessionRepository;
-import org.springframework.session.web.http.SessionRepositoryFilter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+@Configuration
 @EnableWebSecurity
+@EnableRedisHttpSession
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String SECURE_ADMIN_PASSWORD = "rockandroll";
 	
-	@Autowired
-	private SessionRepository<? extends ExpiringSession> sessionRepository;
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.addFilterBefore(new SessionRepositoryFilter(sessionRepository), ChannelProcessingFilter.class)
-
 			.csrf().disable()
 			.formLogin()
-				.loginPage("/login.html")
+				.loginPage("/index.html")
 				.defaultSuccessUrl("/chat.html")
 				.permitAll()
 				.and()
 			.logout()
-				.logoutSuccessUrl("/login.html")
+				.logoutSuccessUrl("/index.html")
 				.permitAll()
 				.and()
 			.authorizeRequests()
-				.antMatchers("/js/**", "/lib/**", "/images/**", "/css/**").permitAll()
+				.antMatchers("/js/**", "/lib/**", "/images/**", "/css/**", "/index.html", "/").permitAll()
 				.antMatchers("/stats").hasRole("ADMIN")
-				.anyRequest().authenticated()
-				.and();
+				.anyRequest().authenticated();
 				
 	}
 
@@ -60,8 +57,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 				UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 				
-				return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), 
-							SECURE_ADMIN_PASSWORD.equals(token.getCredentials()) ? AuthorityUtils.createAuthorityList("ROLE_ADMIN") : null);
+				List<GrantedAuthority> authorities = SECURE_ADMIN_PASSWORD.equals(token.getCredentials()) ? 
+														AuthorityUtils.createAuthorityList("ROLE_ADMIN") : null;
+														
+				return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
 			}
 		});
 	}

@@ -1,78 +1,51 @@
 package com.sergialmar.wschat.config;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.session.ExpiringSession;
-import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 
+import redis.clients.jedis.Protocol;
 import redis.embedded.RedisServer;
 
 @Configuration
 public class RedisConfig {
 
 	@Bean
-	public RedisServerBean redisServer() {
-		return new RedisServerBean();
-	}
+    public static RedisServerBean redisServer() {
+        return new RedisServerBean();
+    }
 
-	class RedisServerBean implements InitializingBean, DisposableBean {
-		private RedisServer redisServer;
+    /**
+     * Implements BeanDefinitionRegistryPostProcessor to ensure this Bean
+     * is initialized before any other Beans. Specifically, we want to ensure
+     * that the Redis Server is started before RedisHttpSessionConfiguration
+     * attempts to enable Keyspace notifications.
+     */
+    static class RedisServerBean implements InitializingBean, DisposableBean, BeanDefinitionRegistryPostProcessor {
+        private RedisServer redisServer;
 
+        public void afterPropertiesSet() throws Exception {
+        	
+            redisServer = new RedisServer(Protocol.DEFAULT_PORT);
+            redisServer.start();
+        }
 
-		@Override
-		public void afterPropertiesSet() throws Exception {
-			redisServer = new RedisServer(getPort());
-			redisServer.start();
-		}
+        public void destroy() throws Exception {
+            if(redisServer != null) {
+                redisServer.stop();
+            }
+        }
 
-		@Override
-		public void destroy() throws Exception {
-			if(redisServer != null) {
-				redisServer.stop();
-			}
-		}
-	}
+        @Override
+        public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {}
 
-	@Bean
-	public JedisConnectionFactory connectionFactory() throws Exception {
-		JedisConnectionFactory factory = new JedisConnectionFactory();
-		factory.setPort(getPort());
-		return factory;
-	}
+        @Override
+        public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {}
 
-	@Bean
-	public RedisTemplate<String,ExpiringSession> redisTemplate(RedisConnectionFactory connectionFactory) {
-		RedisTemplate<String, ExpiringSession> template = new RedisTemplate<String, ExpiringSession>();
-		template.setKeySerializer(new StringRedisSerializer());
-		template.setHashKeySerializer(new StringRedisSerializer());
-		template.setConnectionFactory(connectionFactory);
-		return template;
-	}
-
-	@Bean
-	public RedisOperationsSessionRepository sessionRepository(RedisTemplate<String, ExpiringSession> redisTemplate) {
-		return new RedisOperationsSessionRepository(redisTemplate);
-	}
-
-
-
-	private Integer availablePort;
-
-	private int getPort() throws IOException {
-		if(availablePort == null) {
-			ServerSocket socket = new ServerSocket(0);
-			availablePort = socket.getLocalPort();
-			socket.close();
-		}
-		return availablePort;
-	}
+    }
 }
