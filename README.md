@@ -14,3 +14,6 @@ Chat application using AngularJS and Spring WebSockets (STOMP over WebSockets)
 - WebSockets stats exposed at /stats
 - WebSocket security with Spring Security
 - Spring Session integration
+
+## Running the app
+gradle bootRun
