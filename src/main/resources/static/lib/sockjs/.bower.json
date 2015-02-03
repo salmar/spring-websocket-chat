@@ -15,6 +15,6 @@
     "commit": "ae96e770ab85caf9073a8806a9dcd7c0ce316623"
   },
   "_source": "git://github.com/myguidingstar/bower-sockjs.git",
-  "_target": "~0.3",
+  "_target": "~0.3.4",
   "_originalSource": "sockjs"
 }

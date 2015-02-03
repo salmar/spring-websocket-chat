@@ -1,12 +1,12 @@
 /*
  * Toastr
  * Version 2.0.1
- * Copyright 2012 John Papa and Hans Fjällemark.  
+ * Copyright 2012 John Papa and Hans FjÃ¤llemark.  
  * All Rights Reserved.  
  * Use, reproduction, distribution, and modification of this code is subject to the terms and 
  * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
  *
- * Author: John Papa and Hans Fjällemark
+ * Author: John Papa and Hans FjÃ¤llemark
  * Project: https://github.com/CodeSeven/toastr
  */
 .toast-title {
@@ -73,6 +73,9 @@ button.toast-close-button {
   top: 12px;
   left: 12px;
 }
+.toast-top-center {
+  top: 12px;
+}
 .toast-top-right {
   top: 12px;
   right: 12px;
@@ -81,15 +84,38 @@ button.toast-close-button {
   right: 12px;
   bottom: 12px;
 }
+.toast-bottom-center {
+  bottom: 12px;
+}
 .toast-bottom-left {
   bottom: 12px;
   left: 12px;
+}
+.toast-center {
+  top: 45%;
 }
 #toast-container {
   position: fixed;
   z-index: 999999;
   /*overrides*/
 
+}
+#toast-container.toast-center,
+#toast-container.toast-top-center,
+#toast-container.toast-bottom-center{
+  width: 100%;
+  pointer-events: none;
+}
+#toast-container.toast-center > div,
+#toast-container.toast-top-center > div,
+#toast-container.toast-bottom-center > div{
+  margin: auto;
+  pointer-events: auto;
+}
+#toast-container.toast-center > button,
+#toast-container.toast-top-cente > button,
+#toast-container.toast-bottom-center > button{
+  pointer-events: auto;
 }
 #toast-container * {
   -moz-box-sizing: border-box;
@@ -192,8 +218,8 @@ button.toast-close-button {
   * AngularJS-Toaster
   * Version 0.3
  */
-#toast-container > div.ng-enter,
-#toast-container > div.ng-leave
+:not(.no-enter)#toast-container > div.ng-enter,
+:not(.no-leave)#toast-container > div.ng-leave
 { 
     -webkit-transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
     -moz-transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
@@ -202,12 +228,12 @@ button.toast-close-button {
     transition: 1000ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
 } 
 
-#toast-container > div.ng-enter.ng-enter-active, 
-#toast-container > div.ng-leave {
+:not(.no-enter)#toast-container > div.ng-enter.ng-enter-active, 
+:not(.no-leave)#toast-container > div.ng-leave {
     opacity: 0.8;
 }
 
-#toast-container > div.ng-leave.ng-leave-active,
-#toast-container > div.ng-enter {
+:not(.no-leave)#toast-container > div.ng-leave.ng-leave-active,
+:not(.no-enter)#toast-container > div.ng-enter {
     opacity: 0;
 }
