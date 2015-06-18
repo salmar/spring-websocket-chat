@@ -7,9 +7,10 @@ import java.util.Date;
  * @author Sergi Almar
  */
 public class LoginEvent {
+
 	private String username;
 	private Date time;
-	
+
 	public LoginEvent(String username) {
 		this.username = username;
 		time = new Date();

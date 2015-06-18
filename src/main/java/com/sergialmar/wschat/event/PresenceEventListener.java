@@ -1,15 +1,12 @@
 package com.sergialmar.wschat.event;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 /**
@@ -31,6 +28,7 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 		this.participantRepository = participantRepository;
 	}
 	
+	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
 		
 		if(event instanceof SessionConnectEvent) {

@@ -50,10 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		auth.authenticationProvider(new AuthenticationProvider() {
 			
+			@Override
 			public boolean supports(Class<?> authentication) {
 				return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
 			}
 			
+			@Override
 			public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 				UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 				
