@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     ext {
-        springBootVersion = '1.2.1.RELEASE'
+        springBootVersion = '1.2.4.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -27,9 +27,9 @@ repositories {
 }
 
 ext {
-    commonsPoolVersion = '2.3'
-	redisVersion = '0.3'
-	springSessionVersion = '1.0.0.RELEASE'
+    commonsPoolVersion = '2.4.1'
+	redisVersion = '0.5'
+	springSessionVersion = '1.0.1.RELEASE'
 }
 
 dependencies {
@@ -58,7 +58,7 @@ configurations.all {
     resolutionStrategy {
         eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == "org.springframework.security") {
-                details.useVersion "4.0.0.RC1"
+                details.useVersion "4.0.1.RELEASE"
             }
         }
     }
