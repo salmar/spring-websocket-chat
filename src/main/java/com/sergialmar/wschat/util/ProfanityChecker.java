@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 public class ProfanityChecker {
 
 	private Set<String> profanities = new HashSet<>();
-	
+
 	public long getMessageProfanity(String message) {
-		return Arrays.asList(message.split(" ")).stream()
-				.filter(word -> profanities.contains(word))
+		return Arrays.stream(message.split(" ")) //
+				.filter(word -> profanities.contains(word)) //
 				.count();
 	}
-	
+
 	public String filter(String message) {
-		return Arrays.asList(message.split(" ")).stream()
-				.filter(word -> !profanities.contains(word))
+		return Arrays.stream(message.split(" "))//
+				.filter(word -> !profanities.contains(word)) //
 				.collect(Collectors.joining(" "));
 	}
 

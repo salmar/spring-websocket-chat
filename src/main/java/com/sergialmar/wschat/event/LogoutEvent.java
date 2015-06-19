@@ -5,8 +5,9 @@ package com.sergialmar.wschat.event;
  * @author Sergi Almar
  */
 public class LogoutEvent {
-	private String username;
 	
+	private String username;
+
 	public LogoutEvent(String username) {
 		this.username = username;
 	}
@@ -18,5 +19,4 @@ public class LogoutEvent {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 }
