@@ -2,8 +2,7 @@ package com.sergialmar.wschat.event;
 
 import java.util.Optional;
 
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
@@ -16,28 +15,22 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
  * 
  * @author Sergi Almar
  */
-public class PresenceEventListener implements ApplicationListener<ApplicationEvent> {
+public class PresenceEventListener {
 	
 	private ParticipantRepository participantRepository;
+	
 	private SimpMessagingTemplate messagingTemplate;
+	
 	private String loginDestination;
+	
 	private String logoutDestination;
 	
 	public PresenceEventListener(SimpMessagingTemplate messagingTemplate, ParticipantRepository participantRepository) {
 		this.messagingTemplate = messagingTemplate;
 		this.participantRepository = participantRepository;
 	}
-	
-	@Override
-	public void onApplicationEvent(ApplicationEvent event) {
 		
-		if(event instanceof SessionConnectEvent) {
-			handleSessionConnected((SessionConnectEvent) event);
-		} else if(event instanceof SessionDisconnectEvent) {
-			handleSessionDisconnect((SessionDisconnectEvent) event);
-		}
-	}
-	
+	@EventListener
 	private void handleSessionConnected(SessionConnectEvent event) {
 		SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
 		String username = headers.getUser().getName();
@@ -49,6 +42,7 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 		participantRepository.add(headers.getSessionId(), loginEvent);
 	}
 	
+	@EventListener
 	private void handleSessionDisconnect(SessionDisconnectEvent event) {
 		
 		Optional.ofNullable(participantRepository.getParticipant(event.getSessionId()))
@@ -58,33 +52,8 @@ public class PresenceEventListener implements ApplicationListener<ApplicationEve
 				});
 	}
 
-
-	public ParticipantRepository getParticipantRepository() {
-		return participantRepository;
-	}
-
-	public void setParticipantRepository(ParticipantRepository participantRepository) {
-		this.participantRepository = participantRepository;
-	}
-
-	public SimpMessagingTemplate getMessagingTemplate() {
-		return messagingTemplate;
-	}
-
-	public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
-		this.messagingTemplate = messagingTemplate;
-	}
-
-	public String getLoginDestination() {
-		return loginDestination;
-	}
-
 	public void setLoginDestination(String loginDestination) {
 		this.loginDestination = loginDestination;
-	}
-
-	public String getLogoutDestination() {
-		return logoutDestination;
 	}
 
 	public void setLogoutDestination(String logoutDestination) {
