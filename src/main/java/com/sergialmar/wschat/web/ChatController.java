@@ -12,9 +12,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import com.sergialmar.wschat.domain.ChatMessage;
 import com.sergialmar.wschat.domain.SessionProfanity;
@@ -31,10 +28,13 @@ import com.sergialmar.wschat.util.ProfanityChecker;
 public class ChatController {
 
 	@Autowired private ProfanityChecker profanityFilter;
+	
 	@Autowired private SessionProfanity profanity;
-	@Autowired private WebSocketMessageBrokerStats stats;
+	
 	@Autowired private ParticipantRepository participantRepository;
+	
 	@Autowired private SimpMessagingTemplate simpMessagingTemplate;
+	
 	
 	@SubscribeMapping("/chat.participants")
 	public Collection<LoginEvent> retrieveParticipants() {
@@ -69,10 +69,5 @@ public class ChatController {
 	@SendToUser(value = "/queue/errors", broadcast = false)
 	public String handleProfanity(TooMuchProfanityException e) {
 		return e.getMessage();
-	}
-	
-	@RequestMapping("/stats")
-	public @ResponseBody WebSocketMessageBrokerStats showStats() {
-		return stats;
 	}
 }

@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
+import com.sergialmar.wschat.actuator.WebSocketEndpoint;
 import com.sergialmar.wschat.domain.SessionProfanity;
 import com.sergialmar.wschat.event.ParticipantRepository;
 import com.sergialmar.wschat.event.PresenceEventListener;
@@ -68,5 +70,11 @@ public class ChatConfig {
 		ProfanityChecker checker = new ProfanityChecker();
 		checker.setProfanities(profanities);
 		return checker;
+	}
+	
+	@Bean
+	@Description("Spring Actuator endpoint to expose WebSocket stats")
+	public WebSocketEndpoint websocketEndpoint(WebSocketMessageBrokerStats stats) {
+		return new WebSocketEndpoint(stats);
 	}
 }
