@@ -1,2 +1,0 @@
-// XD Shell 1.1.0.RELEASE log opened at 2015-07-27 08:41:00
-stream create --name twittersearchjava --definition "twittersearch --consumerKey=mKl8FhH147bGcntSFW3qqGLRX --consumerSecret=mnqjxZb3AhxHw2IVc1FguheFkqgoP68RWIdZtjlwTwhbEsfaMr --query='#1mmemories' | mongodb --databaseName=alife --collectionName=tweets" --deploy
