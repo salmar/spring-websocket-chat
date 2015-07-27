@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
+import com.sergialmar.wschat.actuator.MessageMappingEndpoint;
 import com.sergialmar.wschat.actuator.WebSocketEndpoint;
 import com.sergialmar.wschat.domain.SessionProfanity;
 import com.sergialmar.wschat.event.ParticipantRepository;
@@ -76,5 +77,11 @@ public class ChatConfig {
 	@Description("Spring Actuator endpoint to expose WebSocket stats")
 	public WebSocketEndpoint websocketEndpoint(WebSocketMessageBrokerStats stats) {
 		return new WebSocketEndpoint(stats);
+	}
+	
+	@Bean
+	@Description("Spring Actuator endpoint to expose WebSocket message mappings")
+	public MessageMappingEndpoint messageMappingEndpoint() {
+		return new MessageMappingEndpoint();
 	}
 }

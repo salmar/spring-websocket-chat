@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 /**
- * {@link Endpoint} to expose websocket stats
+ * {@link Endpoint} to expose WebSocket stats
  *
  * @author Sergi Almar
  */
