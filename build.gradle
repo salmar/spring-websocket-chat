@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     ext {
-        springBootVersion = '1.3.0.M1'
+        springBootVersion = '1.3.0.M5'
     }
     repositories {
         mavenCentral()
@@ -29,11 +29,11 @@ repositories {
 }
 
 ext {
-    commonsPoolVersion = '2.4.1'
-    nettyVersion = '4.0.29.Final'
-    reactorVersion = '2.0.3.RELEASE'
+    commonsPoolVersion = '2.4.2'
+    nettyVersion = '4.0.31.Final'
+    reactorVersion = '2.0.5.RELEASE'
 	redisVersion = '0.6'
-	springSessionVersion = '1.0.1.RELEASE'
+	springSessionVersion = '1.0.2.RELEASE'
 		
 }
 
@@ -48,7 +48,6 @@ dependencies {
     compile("org.springframework.session:spring-session:$springSessionVersion")
     compile("org.apache.commons:commons-pool2:$commonsPoolVersion")
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
-    compile("io.projectreactor:reactor-net:$reactorVersion")
     compile("io.projectreactor:reactor-core:${reactorVersion}")
 	compile("io.projectreactor:reactor-net:${reactorVersion}") {
 		exclude group: "io.netty", module: "netty-all"
