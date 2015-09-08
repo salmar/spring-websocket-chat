@@ -1,7 +1,5 @@
-package com.sergialmar.wschat.actuator;
+package org.springframework.boot.actuate.endpoint;
 
-import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
-import org.springframework.boot.actuate.endpoint.Endpoint;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
@@ -16,7 +14,7 @@ public class WebSocketEndpoint extends AbstractEndpoint<WebSocketMessageBrokerSt
 	private WebSocketMessageBrokerStats webSocketMessageBrokerStats;
 	
 	public WebSocketEndpoint(WebSocketMessageBrokerStats webSocketMessageBrokerStats) {
-		super("websocket");
+		super("websocketstats");
 		this.webSocketMessageBrokerStats = webSocketMessageBrokerStats;
 	}
 

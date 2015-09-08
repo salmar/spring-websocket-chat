@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.boot.actuate.endpoint.MessageMappingEndpoint;
+import org.springframework.boot.actuate.endpoint.WebSocketEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -12,8 +14,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
-import com.sergialmar.wschat.actuator.MessageMappingEndpoint;
-import com.sergialmar.wschat.actuator.WebSocketEndpoint;
 import com.sergialmar.wschat.domain.SessionProfanity;
 import com.sergialmar.wschat.event.ParticipantRepository;
 import com.sergialmar.wschat.event.PresenceEventListener;
