@@ -1,6 +1,8 @@
 spring-websocket-chat
 =====================
 
+[![Join the chat at https://gitter.im/salmar/spring-websocket-chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/salmar/spring-websocket-chat?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Chat application using AngularJS and Spring WebSockets (STOMP over WebSockets)
 
 
