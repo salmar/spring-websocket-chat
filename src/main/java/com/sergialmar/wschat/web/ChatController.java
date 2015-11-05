@@ -21,6 +21,7 @@ import com.sergialmar.wschat.exception.TooMuchProfanityException;
 import com.sergialmar.wschat.util.ProfanityChecker;
 
 /**
+ * Controller that handles WebSocket chat messages
  * 
  * @author Sergi Almar
  */
@@ -56,7 +57,7 @@ public class ChatController {
 		
 		message.setUsername(principal.getName());
 
-		simpMessagingTemplate.convertAndSend("/user/" + username + "/queue/chat.message", message);
+		simpMessagingTemplate.convertAndSend("/user/" + username + "/exchange/amq.direct/chat.message", message);
 	}
 	
 	private void checkProfanityAndSanitize(ChatMessage message) {
@@ -66,7 +67,7 @@ public class ChatController {
 	}
 	
 	@MessageExceptionHandler
-	@SendToUser(value = "/queue/errors", broadcast = false)
+	@SendToUser(value = "/exchange/amq.direct/errors", broadcast = false)
 	public String handleProfanity(TooMuchProfanityException e) {
 		return e.getMessage();
 	}

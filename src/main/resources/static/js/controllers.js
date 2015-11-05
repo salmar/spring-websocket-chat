@@ -90,13 +90,13 @@ angular.module('springChat.controllers', ['toaster'])
 					$scope.messages.unshift(JSON.parse(message.body));
 		        });
 				  
-				chatSocket.subscribe("/user/queue/chat.message", function(message) {
+				chatSocket.subscribe("/user/exchange/amq.direct/chat.message", function(message) {
 					var parsed = JSON.parse(message.body);
 					parsed.priv = true;
 					$scope.messages.unshift(parsed);
 		        });
 				  
-				chatSocket.subscribe("/user/queue/errors", function(message) {
+				chatSocket.subscribe("/user/exchange/amq.direct/errors", function(message) {
 					toaster.pop('error', "Error", message.body);
 		        });
 		          

@@ -33,8 +33,7 @@ ext {
     nettyVersion = '4.0.32.Final'
     reactorVersion = '2.0.6.RELEASE'
 	redisVersion = '0.6'
-	springSessionVersion = '1.0.2.RELEASE'
-		
+	springSessionVersion = '1.0.2.RELEASE'	
 }
 
 dependencies {
