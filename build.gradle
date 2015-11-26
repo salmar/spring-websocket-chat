@@ -7,7 +7,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     ext {
-        springBootVersion = '1.3.0.RC1'
+        springBootVersion = '1.3.0.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -30,10 +30,10 @@ repositories {
 
 ext {
     commonsPoolVersion = '2.4.2'
-    nettyVersion = '4.0.32.Final'
-    reactorVersion = '2.0.6.RELEASE'
-	redisVersion = '0.6'
-	springSessionVersion = '1.0.2.RELEASE'	
+    nettyVersion = '4.0.33.Final'
+    reactorVersion = '2.0.7.RELEASE'
+    redisVersion = '0.6'
+    springSessionVersion = '1.1.0.M1'	
 }
 
 dependencies {
