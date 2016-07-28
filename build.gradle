@@ -12,8 +12,8 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "http://repo.spring.io/libs-release" }
-    	maven { url "http://repo.spring.io/milestone" }
-    	maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "http://repo.spring.io/snapshot" }
     }
 
     dependencies {
@@ -21,9 +21,9 @@ buildscript {
     }
 }
 
-repositories {	
-	mavenCentral()
-	maven { url "http://repo.spring.io/libs-release" }
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
     maven { url "http://repo.spring.io/milestone" }
     maven { url "http://repo.spring.io/snapshot" }
 }
@@ -33,7 +33,7 @@ ext {
     nettyVersion = '4.0.33.Final'
     reactorVersion = '2.0.7.RELEASE'
     redisVersion = '0.6'
-    springSessionVersion = '1.1.0.M1'	
+    springSessionVersion = '1.1.0.M1'
 }
 
 dependencies {
@@ -48,10 +48,10 @@ dependencies {
     compile("org.apache.commons:commons-pool2:$commonsPoolVersion")
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
     compile("io.projectreactor:reactor-core:${reactorVersion}")
-	compile("io.projectreactor:reactor-net:${reactorVersion}") {
-		exclude group: "io.netty", module: "netty-all"
-	}
-	compile("io.netty:netty-all:$nettyVersion")
+    compile("io.projectreactor:reactor-net:${reactorVersion}") {
+        exclude group: "io.netty", module: "netty-all"
+    }
+    compile("io.netty:netty-all:$nettyVersion")
     
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
