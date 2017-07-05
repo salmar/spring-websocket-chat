@@ -1,11 +1,9 @@
 package com.sergialmar.wschat.config;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.MessageMappingEndpoint;
 import org.springframework.boot.actuate.endpoint.WebSocketEndpoint;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
@@ -20,34 +18,18 @@ import com.sergialmar.wschat.event.PresenceEventListener;
 import com.sergialmar.wschat.util.ProfanityChecker;
 
 @Configuration
+@EnableConfigurationProperties(ChatProperties.class)
 public class ChatConfig {
 
-	public static class Destinations {
-		private Destinations() {
-		}
-
-		private static final String LOGIN = "/topic/chat.login";
-		private static final String LOGOUT = "/topic/chat.logout";
-	}
-
-	private static final int MAX_PROFANITY_LEVEL = 5;
-
-	/*
-	 * @Bean
-	 * 
-	 * @Description("Application event multicaster to process events asynchonously"
-	 * ) public ApplicationEventMulticaster applicationEventMulticaster() {
-	 * SimpleApplicationEventMulticaster multicaster = new
-	 * SimpleApplicationEventMulticaster();
-	 * multicaster.setTaskExecutor(Executors.newFixedThreadPool(10)); return
-	 * multicaster; }
-	 */
+	@Autowired
+	private ChatProperties chatProperties;
+	
 	@Bean
 	@Description("Tracks user presence (join / leave) and broacasts it to all connected users")
 	public PresenceEventListener presenceEventListener(SimpMessagingTemplate messagingTemplate) {
 		PresenceEventListener presence = new PresenceEventListener(messagingTemplate, participantRepository());
-		presence.setLoginDestination(Destinations.LOGIN);
-		presence.setLogoutDestination(Destinations.LOGOUT);
+		presence.setLoginDestination(chatProperties.getDestinations().getLogin());
+		presence.setLogoutDestination(chatProperties.getDestinations().getLogout());
 		return presence;
 	}
 
@@ -61,15 +43,14 @@ public class ChatConfig {
 	@Scope(value = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
 	@Description("Keeps track of the level of profanity of a websocket session")
 	public SessionProfanity sessionProfanity() {
-		return new SessionProfanity(MAX_PROFANITY_LEVEL);
+		return new SessionProfanity(chatProperties.getMaxProfanityLevel());
 	}
 
 	@Bean
 	@Description("Utility class to check the number of profanities and filter them")
 	public ProfanityChecker profanityFilter() {
-		Set<String> profanities = new HashSet<>(Arrays.asList("damn", "crap", "ass"));
 		ProfanityChecker checker = new ProfanityChecker();
-		checker.setProfanities(profanities);
+		checker.setProfanities(chatProperties.getDisallowedWords());
 		return checker;
 	}
 	
