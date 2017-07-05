@@ -3,7 +3,6 @@ package com.sergialmar.wschat.config;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,11 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
-@Configuration
 @EnableWebSecurity
-@EnableRedisHttpSession
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -31,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			.formLogin()
 				.loginPage("/index.html")
+				.loginProcessingUrl("/login")
 				.defaultSuccessUrl("/chat.html")
 				.permitAll()
 				.and()

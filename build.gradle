@@ -1,13 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
+version = '2.0.0.M1'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     ext {
-        springBootVersion = '1.3.0.RELEASE'
+        springBootVersion = '2.0.0.M2'
     }
     repositories {
         mavenCentral()
@@ -29,36 +31,20 @@ repositories {
 }
 
 ext {
-    commonsPoolVersion = '2.4.2'
-    nettyVersion = '4.0.33.Final'
-    reactorVersion = '2.0.7.RELEASE'
     redisVersion = '0.6'
-    springSessionVersion = '1.1.0.M1'
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-redis")
-    
+
+    compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security:spring-security-messaging")
-    compile("org.springframework.session:spring-session:$springSessionVersion")
-    compile("org.apache.commons:commons-pool2:$commonsPoolVersion")
+    compile('org.springframework.session:spring-session')
+    
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
-    compile("io.projectreactor:reactor-core:${reactorVersion}")
-    compile("io.projectreactor:reactor-net:${reactorVersion}") {
-        exclude group: "io.netty", module: "netty-all"
-    }
-    compile("io.netty:netty-all:$nettyVersion")
     
     testCompile("org.springframework.boot:spring-boot-starter-test")
-}
-
-eclipse {
-    classpath {
-         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
-         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
-    }
 }
