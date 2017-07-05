@@ -32,6 +32,7 @@ repositories {
 
 ext {
     redisVersion = '0.6'
+    jUnit5Version = '5.0.0-M5'
 }
 
 dependencies {
@@ -42,9 +43,10 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security:spring-security-messaging")
-    compile('org.springframework.session:spring-session')
+    compile("org.springframework.session:spring-session")
     
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
     
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.junit.jupiter:junit-jupiter-api:${jUnit5Version}")
 }

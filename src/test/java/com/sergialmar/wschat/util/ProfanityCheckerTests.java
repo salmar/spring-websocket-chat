@@ -1,19 +1,20 @@
 package com.sergialmar.wschat.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 public class ProfanityCheckerTests {
 
-	private ProfanityChecker profanityChecker;
+	private static ProfanityChecker profanityChecker;
 	
-	@Before
-	public void setup() {
+	@BeforeAll
+	public static void setup() {
 		Set<String> profanities = new HashSet<>();
 		profanities.add(".NET");
 		profanities.add("Micro$oft");
