@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 				
 				List<GrantedAuthority> authorities = SECURE_ADMIN_PASSWORD.equals(token.getCredentials()) ? 
-														AuthorityUtils.createAuthorityList("ROLE_ADMIN") : null;
+														AuthorityUtils.createAuthorityList("ACTUATOR") : null;
 														
 				return new UsernamePasswordAuthenticationToken(token.getName(), token.getCredentials(), authorities);
 			}
