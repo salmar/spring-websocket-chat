@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'eclipse-wtp'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -9,7 +9,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 buildscript {
     ext {
-        springBootVersion = '2.0.0.M2'
+        springBootVersion = '2.0.0.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -32,18 +32,17 @@ repositories {
 
 ext {
     redisVersion = '0.6'
-    jUnit5Version = '5.0.0-M5'
+    jUnit5Version = '5.1.0'
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-data-redis")
 
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security:spring-security-messaging")
-    compile("org.springframework.session:spring-session")
+    compile("org.springframework.session:spring-session-data-redis")
     
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
     
