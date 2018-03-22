@@ -45,6 +45,7 @@ dependencies {
     compile("org.springframework.session:spring-session-data-redis")
     
     compile("com.github.kstyrc:embedded-redis:$redisVersion")
+    compile("redis.clients:jedis")
     
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.junit.jupiter:junit-jupiter-api:${jUnit5Version}")

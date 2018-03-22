@@ -1,8 +1,9 @@
 package com.sergialmar.wschat.config;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.MessageMappingEndpoint;
-import org.springframework.boot.actuate.endpoint.WebSocketEndpoint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +11,13 @@ import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 
 import com.sergialmar.wschat.domain.SessionProfanity;
 import com.sergialmar.wschat.event.ParticipantRepository;
 import com.sergialmar.wschat.event.PresenceEventListener;
 import com.sergialmar.wschat.util.ProfanityChecker;
+
+import redis.embedded.RedisServer;
 
 @Configuration
 @EnableConfigurationProperties(ChatProperties.class)
@@ -54,15 +56,9 @@ public class ChatConfig {
 		return checker;
 	}
 	
-	@Bean
-	@Description("Spring Actuator endpoint to expose WebSocket stats")
-	public WebSocketEndpoint websocketEndpoint(WebSocketMessageBrokerStats stats) {
-		return new WebSocketEndpoint(stats);
-	}
-	
-	@Bean
-	@Description("Spring Actuator endpoint to expose WebSocket message mappings")
-	public MessageMappingEndpoint messageMappingEndpoint() {
-		return new MessageMappingEndpoint();
+	@Bean(initMethod = "start", destroyMethod = "stop")
+	@Description("Embedded Redis used by Spring Session")
+	public RedisServer redisServer(@Value("${redis.embedded.port}") int port)  throws IOException {
+		return new RedisServer(port);
 	}
 }

@@ -1,4 +1,4 @@
-package org.springframework.boot.actuate.trace;
+package org.springframework.boot.actuate.trace.websocket;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -13,22 +13,21 @@ import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 
 /**
- * {@link ChannelInterceptor} that logs messages to a {@link TraceRepository}.
+ * {@link ChannelInterceptor} that logs messages to a {@link WebSocketTraceRepository}.
  *
  * @author Sergi Almar
  */
 public class WebSocketTraceChannelInterceptor extends ChannelInterceptorAdapter {
 
-	private final TraceRepository traceRepository;
+	private final WebSocketTraceRepository traceRepository;
 
 	
-	public WebSocketTraceChannelInterceptor(TraceRepository traceRepository) {
+	public WebSocketTraceChannelInterceptor(WebSocketTraceRepository traceRepository) {
 		this.traceRepository = traceRepository;
 	}
 
 	@Override
 	public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
-		Map<String, Object> trace = new LinkedHashMap<String, Object>();
 		
 		StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
 		
@@ -37,13 +36,16 @@ public class WebSocketTraceChannelInterceptor extends ChannelInterceptorAdapter 
 			return;
 		}
 		
+		WebSocketTrace trace = new WebSocketTrace();
+		
+		trace.setSessionId(headerAccessor.getSessionId());
+		trace.setStompCommand(headerAccessor.getCommand().name());
+		trace.setNativeHeaders(getNativeHeaders(headerAccessor));
+
 		String payload = new String((byte[]) message.getPayload());
 		
-		trace.put("stompCommand", headerAccessor.getCommand().name());
-		trace.put("nativeHeaders", getNativeHeaders(headerAccessor));
-
 		if(!payload.isEmpty()) {
-			trace.put("payload", payload);
+			trace.setPayload(payload);
 		}
 		
 		traceRepository.add(trace);

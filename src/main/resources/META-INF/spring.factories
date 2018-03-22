@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.actuate.autoconfigure.trace.websocket.WebSocketTraceAutoconfiguration,\
+org.springframework.boot.actuate.autoconfigure.websocket.WebSocketEndpointAutoConfiguration

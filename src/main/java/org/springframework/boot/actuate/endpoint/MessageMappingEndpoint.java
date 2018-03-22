@@ -1,14 +1,15 @@
 package org.springframework.boot.actuate.endpoint;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeansException;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.messaging.handler.HandlerMethod;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageMappingInfo;
@@ -20,19 +21,17 @@ import org.springframework.messaging.simp.annotation.support.SimpAnnotationMetho
  *
  * @author Sergi Almar
  */
-@ConfigurationProperties(prefix = "endpoints.websocket-mappings", ignoreUnknownFields = true)
-public class MessageMappingEndpoint extends AbstractEndpoint<Map<String, Object>> 
-		implements ApplicationContextAware {
+@Endpoint(id = "websocketmappings")
+public class MessageMappingEndpoint {
 
-	private ApplicationContext applicationContext;
-
+	private final ApplicationContext applicationContext;
 	
-	public MessageMappingEndpoint() {
-		super("websocketmappings");
+	public MessageMappingEndpoint(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
-	@Override
-	public Map<String, Object> invoke() {
+	@ReadOperation
+	public WebSocketMappings mappings() {
 		SimpAnnotationMethodMessageHandler handler = applicationContext
 				.getBean(SimpAnnotationMethodMessageHandler.class);
 
@@ -41,27 +40,28 @@ public class MessageMappingEndpoint extends AbstractEndpoint<Map<String, Object>
 		Map<SimpMessageMappingInfo, HandlerMethod> subscribeHandlerMethods = 
 				this.filterByAnnotation(handler.getHandlerMethods(), SubscribeMapping.class);
 
-		Map<String, Object> info = new HashMap<String, Object>();
-		info.put("prefixes", handler.getDestinationPrefixes());
-		info.put("messageMappings",extractMapping(messageHandlerMethods));
-		info.put("subscribeMappings", extractMapping(subscribeHandlerMethods));
-
-		return info;
+		WebSocketMappings mappings = new WebSocketMappings();
+		mappings.setPrefixes(handler.getDestinationPrefixes());
+		mappings.setMessageMappings(extractMapping(messageHandlerMethods));
+		mappings.setSubscribeMappings(extractMapping(subscribeHandlerMethods));
+		
+		return mappings;
 	}
 
-	private Map<String, Object> extractMapping(
+	private List<HandlerMapping> extractMapping(
 			Map<SimpMessageMappingInfo, HandlerMethod> handlerMethods) {
 		
-		Map<String, Object> mappings = new HashMap<String, Object>();
+		List<HandlerMapping> mappings = new ArrayList<>();
 
 		for (SimpMessageMappingInfo info : handlerMethods.keySet()) {
 			HandlerMethod handlerMethod = handlerMethods.get(info);
 
-			Map<String, String> map = new LinkedHashMap<String, String>();
-			map.put("bean", handlerMethod.getBean().toString());
-			map.put("method", handlerMethod.toString());
-
-			mappings.put(info.getDestinationConditions().toString(), map);
+			HandlerMapping mapping = new HandlerMapping();
+			mapping.setPredicate(info.getDestinationConditions().toString());
+			mapping.setBeanName(handlerMethod.getBean().toString());
+			mapping.setHandler(handlerMethod.toString());
+			
+			mappings.add(mapping);
 		}
 
 		return mappings;
@@ -70,8 +70,7 @@ public class MessageMappingEndpoint extends AbstractEndpoint<Map<String, Object>
 	private Map<SimpMessageMappingInfo, HandlerMethod> filterByAnnotation(
 			Map<SimpMessageMappingInfo, HandlerMethod> handlerMethods, Class<? extends Annotation> annotation) {
 		
-		Map<SimpMessageMappingInfo, HandlerMethod> filteredHandlerMethods = 
-				new LinkedHashMap<SimpMessageMappingInfo, HandlerMethod>();
+		Map<SimpMessageMappingInfo, HandlerMethod> filteredHandlerMethods = new LinkedHashMap<>();
 
 		for (SimpMessageMappingInfo info : handlerMethods.keySet()) {
 			HandlerMethod handlerMethod = handlerMethods.get(info);
@@ -83,9 +82,79 @@ public class MessageMappingEndpoint extends AbstractEndpoint<Map<String, Object>
 
 		return filteredHandlerMethods;
 	}
+	
+	/**
+	 * A description of an application's message mappings. Primarily intended for
+	 * serialization to JSON.
+	 */
+	public static final class WebSocketMappings {
 
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
+		private Collection<String> prefixes;
+		
+		private List<HandlerMapping> subscribeMappings;
+		
+		private List<HandlerMapping> messageMappings;
+		
+
+		public Collection<String> getPrefixes() {
+			return prefixes;
+		}
+
+		public void setPrefixes(Collection<String> prefixes) {
+			this.prefixes = prefixes;
+		}
+
+		public List<HandlerMapping> getSubscribeMappings() {
+			return subscribeMappings;
+		}
+
+		public void setSubscribeMappings(List<HandlerMapping> subscribeMappings) {
+			this.subscribeMappings = subscribeMappings;
+		}
+
+		public List<HandlerMapping> getMessageMappings() {
+			return messageMappings;
+		}
+
+		public void setMessageMappings(List<HandlerMapping> messageMappings) {
+			this.messageMappings = messageMappings;
+		}
+	}
+	
+	/**
+	 * A description of a handler method mappings. Primarily intended for
+	 * serialization to JSON.
+	 */
+	public static final class HandlerMapping {
+		
+		private String predicate;
+		
+		private String beanName;
+		
+		private String handler;
+
+		public String getPredicate() {
+			return predicate;
+		}
+
+		public void setPredicate(String predicate) {
+			this.predicate = predicate;
+		}
+
+		public String getBeanName() {
+			return beanName;
+		}
+
+		public void setBeanName(String beanName) {
+			this.beanName = beanName;
+		}
+
+		public String getHandler() {
+			return handler;
+		}
+
+		public void setHandler(String handler) {
+			this.handler = handler;
+		}
 	}
 }
